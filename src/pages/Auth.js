@@ -1,5 +1,6 @@
 // Import necessary dependencies
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Sample authentication functions (replace with actual authentication logic)
 const loginCheck = async (username, password) => {
@@ -18,6 +19,9 @@ const loginCheck = async (username, password) => {
 
 // React component for User Authentication
 const Auth = () => {
+  // Const for navigation
+  const navigate = useNavigate();
+
   // State for form input values
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -38,6 +42,7 @@ const Auth = () => {
       console.log('Login successful:', user);
       setIsLoggedIn(true);
       setError(null);
+      navigate("/");
     } catch (error) {
       console.error('Login failed:', error.message);
       setError('Invalid credentials. Please try again.');

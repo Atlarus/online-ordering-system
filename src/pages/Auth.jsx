@@ -1,4 +1,3 @@
-// Import necessary dependencies
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -42,7 +41,7 @@ const Auth = () => {
       console.log('Login successful:', user);
       setIsLoggedIn(true);
       setError(null);
-      navigate("/");
+      navigate('/Admin');
     } catch (error) {
       console.error('Login failed:', error.message);
       setError('Invalid credentials. Please try again.');
@@ -50,36 +49,40 @@ const Auth = () => {
   };
 
   return (
-    <div>
-      {isLoggedIn ? (
-        <div>
-          <p>Welcome, {username}!</p>
-          {/* Include logout functionality here */}
-        </div>
-      ) : (
-        <form onSubmit={handleLogin}>
-          <label>
-            Username:
+    <div className="pt-8 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <h2 className="text-3xl font-bold mb-4">Login</h2>
+        {isLoggedIn ? (
+          <div>
+            <p className="text-xl font-semibold mb-4">Welcome, {username}!</p>
+            {/* Include logout functionality here */}
+          </div>
+        ) : (
+          <form onSubmit={handleLogin} className="space-y-4">
+            <label className="block text-sm font-semibold">Username:</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              className="w-full border p-2 rounded-md"
             />
-          </label>
-          <br />
-          <label>
-            Password:
+            <label className="block text-sm font-semibold">Password:</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="w-full border p-2 rounded-md"
             />
-          </label>
-          <br />
-          <button type="submit">Login</button>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-        </form>
-      )}
+            <button
+              type="submit"
+              className="bg-purple-500 text-white p-2 rounded-md hover:bg-purple-600 focus:outline-none"
+            >
+              Login
+            </button>
+            {error && <p className="text-red-500">{error}</p>}
+          </form>
+        )}
+      </div>
     </div>
   );
 };

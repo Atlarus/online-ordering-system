@@ -17,7 +17,7 @@ const loginCheck = async (username, password) => {
 };
 
 // React component for User Authentication
-const Auth = () => {
+const Auth = ({ loginID, setLoginID }) => {
   // Const for navigation
   const navigate = useNavigate();
 
@@ -41,6 +41,7 @@ const Auth = () => {
       console.log('Login successful:', user);
       setIsLoggedIn(true);
       setError(null);
+      setLoginID(username);
       navigate('/Admin');
     } catch (error) {
       console.error('Login failed:', error.message);

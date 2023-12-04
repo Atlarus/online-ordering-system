@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import CartModal from './CartModal';
 
-const Layout = ({ cart, setCart }) => {
+const Layout = ({ cart, setCart, setProducts }) => {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
   const openCartModal = () => {
@@ -46,6 +46,7 @@ const Layout = ({ cart, setCart }) => {
       <CartModal
         cart={cart}
         setCart={setCart}
+        setProducts={setProducts}
         isModalOpen={isCartModalOpen}
         closeModal={closeCartModal}
       />

@@ -25,14 +25,12 @@ function App() {
         { id: 1, name: 'Product A2', description: 'Description for Product A', price: 19.99, stock: 10 },
         { id: 2, name: 'Product B2', description: 'Description for Product B', price: 29.99, stock: 15 },
         { id: 3, name: 'Product C2', description: 'Description for Product C', price: 39.99, stock: 8 },
-        { id: 4, name: 'Product D2', description: 'Description for Product D', price: 49.99, stock: 5 }
+        { id: 4, name: 'Product D2', description: 'Description for Product D', price: 49.99, stock: 0 }
       ]);
     }
   }, [loginID]);
 
-  const [cart, setCart] = useState([
-    { id: 1, name: 'Product A', description: 'Description for Product A', price: 19.99, quantity: 1 },
-  ]);
+  const [cart, setCart] = useState([]);
 
   return (
     <BrowserRouter>
@@ -40,7 +38,7 @@ function App() {
         <Route
           exact
           path='/'
-          element={<Layout cart={cart} setCart={setCart} />}
+          element={<Layout cart={cart} setCart={setCart} setProducts={setProducts} />}
         >
           {/* Pass both products and cart to the Products component */}
           <Route index element={<Products products={products} cart={cart} setCart={setCart} />} />

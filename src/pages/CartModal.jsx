@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-const CartModal = ({ cart, setCart, isModalOpen, closeModal }) => {
+const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
   // Function to remove a product from the cart
   const removeFromCart = (productId) => {
     const updatedCart = cart.filter((item) => item.id !== productId);
@@ -30,7 +30,23 @@ const CartModal = ({ cart, setCart, isModalOpen, closeModal }) => {
     );
   };
 
-  // Calculate the total for all items
+  const placeOrder = () => {
+    // Deduct stock after placing the order
+    cart.forEach((item) => {
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.id === item.id
+            ? { ...product, stock: product.stock - item.quantity }
+            : product
+        )
+      );
+    });
+
+    // Clear the cart after placing the order
+    setCart([]);
+    closeModal(); // Close the modal
+  };
+
   const overallTotal = cart.reduce((total, item) => total + item.quantity * item.price, 0);
 
   return (
@@ -90,8 +106,15 @@ const CartModal = ({ cart, setCart, isModalOpen, closeModal }) => {
           <p className="font-semibold">Overall Total: ${overallTotal.toFixed(2)}</p>
         </div>
         <button
+          onClick={placeOrder}
+          className="bg-green-500 text-white px-4 py-2 rounded mt-4"
+          disabled={cart.length === 0}
+        >
+          Place Order
+        </button>
+        <button
           onClick={closeModal}
-          className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+          className="bg-blue-500 text-white px-4 py-2 rounded mt-4 ml-2"
         >
           Close
         </button>

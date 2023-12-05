@@ -5,7 +5,6 @@ import Auth from './pages/Auth';
 import React, { useState, useEffect } from 'react';
 import Layout from './pages/Layout';
 import Admin from './pages/Admin';
-import BusinessDetails from './pages/BusinessDetails'; // Your business details component
 
 function App() {
   const [loginID, setLoginID] = useState('');
@@ -35,17 +34,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          exact
-          path='/'
-          element={<Layout cart={cart} setCart={setCart} setProducts={setProducts} />}
-        >
+        <Route path='/:businessName' element={<Layout cart={cart} setCart={setCart} setProducts={setProducts} />}>
           {/* Pass both products and cart to the Products component */}
           <Route index element={<Products products={products} cart={cart} setCart={setCart} />} />
-          <Route path='/online-ordering-system' element={<Products products={products} cart={cart} setCart={setCart} />} />
-          <Route path='/Auth' element={<Auth loginID={loginID} setLoginID={setLoginID} />} />
-          <Route path="/Admin" element={<Admin products={products} setProducts={setProducts} />} />
-          <Route path="/online-ordering-system/:businessName" component={BusinessDetails} />
+          <Route path='Auth' element={<Auth loginID={loginID} setLoginID={setLoginID} />} />
+          <Route path='Admin' element={<Admin products={products} setProducts={setProducts} />} />
+          <Route path='View' element={<Products products={products} cart={cart} setCart={setCart} />} />
         </Route>
       </Routes>
     </BrowserRouter>

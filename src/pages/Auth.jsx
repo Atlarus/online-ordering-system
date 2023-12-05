@@ -9,6 +9,8 @@ const loginCheck = async (username, password) => {
       // Replace with actual authentication logic
       if (username === 'user1' && password === '123') {
         resolve({ username: 'user1', token: 'exampleToken' });
+      } else if (username === 'user2' && password === '123') {
+        resolve({ username: 'user2', token: 'exampleToken2' });
       } else {
         reject(new Error('Invalid credentials'));
       }
@@ -32,22 +34,32 @@ const Auth = ({ loginID, setLoginID }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Function to handle form submission
-  const handleLogin = async (e) => {
-    e.preventDefault();
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-    try {
-      const user = await loginCheck(username, password);
-      // Replace with actual authentication logic and token handling
-      console.log('Login successful:', user);
-      setIsLoggedIn(true);
-      setError(null);
-      setLoginID(username);
+  try {
+    const user = await loginCheck(username, password);
+    // Replace with actual authentication logic and token handling
+    console.log('Login successful:', user);
+    setIsLoggedIn(true);
+    setError(null);
+    setLoginID(username);
+
+    // Check if loginID is 'user1' and navigate accordingly
+    if (username === 'user1') {
+      navigate('/Business Name');
+    } else if (username === 'user2') {
+      // Navigate to the "/Business Name" route for user2
+      navigate('/Teratak Seni');
+    } else {
+      // Navigate to a different route for other users if needed
       navigate('/Admin');
-    } catch (error) {
-      console.error('Login failed:', error.message);
-      setError('Invalid credentials. Please try again.');
     }
-  };
+  } catch (error) {
+    console.error('Login failed:', error.message);
+    setError('Invalid credentials. Please try again.');
+  }
+};
 
   return (
     <div className="pt-8 flex items-center justify-center">

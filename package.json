@@ -1,6 +1,6 @@
 {
   "name": "online-ordering-system",
-  "homepage": "https://atlarus.github.io/online-ordering-system/",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

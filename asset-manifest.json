@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/online-ordering-system/static/css/main.7249a089.css",
-    "main.js": "/online-ordering-system/static/js/main.eba28c42.js",
-    "static/js/787.d70d0835.chunk.js": "/online-ordering-system/static/js/787.d70d0835.chunk.js",
-    "index.html": "/online-ordering-system/index.html",
-    "main.7249a089.css.map": "/online-ordering-system/static/css/main.7249a089.css.map",
-    "main.eba28c42.js.map": "/online-ordering-system/static/js/main.eba28c42.js.map",
-    "787.d70d0835.chunk.js.map": "/online-ordering-system/static/js/787.d70d0835.chunk.js.map"
+    "main.css": "/static/css/main.7249a089.css",
+    "main.js": "/static/js/main.04e4d718.js",
+    "static/js/787.d70d0835.chunk.js": "/static/js/787.d70d0835.chunk.js",
+    "index.html": "/index.html",
+    "main.7249a089.css.map": "/static/css/main.7249a089.css.map",
+    "main.04e4d718.js.map": "/static/js/main.04e4d718.js.map",
+    "787.d70d0835.chunk.js.map": "/static/js/787.d70d0835.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7249a089.css",
-    "static/js/main.eba28c42.js"
+    "static/js/main.04e4d718.js"
   ]
 }

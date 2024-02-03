@@ -9,6 +9,7 @@ import Admin from './pages/Admin';
 function App() {
   const [loginID, setLoginID] = useState('');
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
 
   // Sample product data (replace with actual product data)
   useEffect(() => {
@@ -28,8 +29,6 @@ function App() {
       ]);
     }
   }, [loginID]);
-
-  const [cart, setCart] = useState([]);
 
   return (
     <BrowserRouter>

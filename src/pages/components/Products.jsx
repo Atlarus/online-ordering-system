@@ -69,7 +69,7 @@ const Products = ({ products, cart, setCart }) => {
 
   return (
     <div className="p-6">
-      <h2 className="text-4xl font-extrabold mb-6 text-white">Product Catalog</h2>
+      <h1 className="text-4xl font-extrabold mb-6">Product Catalog</h1>
       <input
         type="text"
         placeholder="Search products..."

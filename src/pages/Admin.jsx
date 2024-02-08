@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import EditModal from './EditModal';
+import QRCodeGenerator from './functions/QRCodeGenerator';
 
 const Admin = ({ products, setProducts }) => {
   const [searchInput, setSearchInput] = useState('');
@@ -136,6 +137,10 @@ const Admin = ({ products, setProducts }) => {
           onClose={closeEditModal}
         />
       )}
+
+      <div>
+        <QRCodeGenerator />
+      </div>
     </div>
   );
 };

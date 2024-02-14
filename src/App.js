@@ -33,12 +33,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/:businessName' element={<Layout cart={cart} setCart={setCart} setProducts={setProducts} />}>
-          {/* Pass both products and cart to the Products component */}
+        <Route path='/' element={<Layout cart={cart} setCart={setCart} setProducts={setProducts} />}>
           <Route index element={<Products products={products} cart={cart} setCart={setCart} />} />
           <Route path='Auth' element={<Auth loginID={loginID} setLoginID={setLoginID} />} />
           <Route path='Admin' element={<Admin products={products} setProducts={setProducts} />} />
           <Route path='View' element={<Products products={products} cart={cart} setCart={setCart} />} />
+        </Route>
+        <Route path='/:businessName' element={<Layout cart={cart} setCart={setCart} setProducts={setProducts} />}>
+          <Route index element={<Products products={products} cart={cart} setCart={setCart} />} />
         </Route>
       </Routes>
     </BrowserRouter>

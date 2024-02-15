@@ -1,46 +1,59 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 import './App.css';
 import Products from './pages/components/Products';
 import Auth from './pages/Auth';
 import React, { useState, useEffect } from 'react';
 import Layout from './pages/Layout';
 import Admin from './pages/Admin';
+import axios from 'axios';
 
 function App() {
   const [loginID, setLoginID] = useState('');
-  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const [data, setData] = useState({});
+  const [error, setError] = useState(null);
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
-  // Sample product data (replace with actual product data)
+  const getBusinessIDFromPath = () => {
+    const pathArray = window.location.pathname.split('/');
+    const businessIDIndex = pathArray.indexOf('') + 1; // Assuming businessID is the first parameter
+    return pathArray[businessIDIndex];
+  };
+
+  const businessID = getBusinessIDFromPath();
+
   useEffect(() => {
-    if (loginID === 'user1') {
-      setProducts([
-        { id: 1, name: 'Product A', description: 'Description for Product A', price: 19.99, stock: 10 },
-        { id: 2, name: 'Product B', description: 'Description for Product B', price: 29.99, stock: 15 },
-        { id: 3, name: 'Product C', description: 'Description for Product C', price: 39.99, stock: 8 },
-        { id: 4, name: 'Product D', description: 'Description for Product D', price: 49.99, stock: 5 }
-      ]);
-    } else {
-      setProducts([
-        { id: 1, name: 'Product A2', description: 'Description for Product A', price: 19.99, stock: 10 },
-        { id: 2, name: 'Product B2', description: 'Description for Product B', price: 29.99, stock: 15 },
-        { id: 3, name: 'Product C2', description: 'Description for Product C', price: 39.99, stock: 8 },
-        { id: 4, name: 'Product D2', description: 'Description for Product D', price: 49.99, stock: 0 }
-      ]);
-    }
-  }, [loginID]);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://192.168.68.110:5000/get_products_services_events?businessID=${businessID}`);
+        setData(response.data);
+        setError(null);
+        setIsDataLoading(false); // Set loading to false when data is fetched
+        console.log("pass");
+      } catch (error) {
+        setError(error.response.data.error);
+        setData(null);
+        setIsDataLoading(false); // Set loading to false even on error
+        console.log("fail");
+      }
+    };
+
+    fetchData();
+  }, [businessID]);
+
+  if (isDataLoading) {
+    // Render a loading indicator or a placeholder while data is being fetched
+    return <div>Loading...</div>;
+  }
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Layout cart={cart} setCart={setCart} setProducts={setProducts} />}>
-          <Route index element={<Products products={products} cart={cart} setCart={setCart} />} />
+        <Route path='/:businessID' element={<Layout cart={cart} setCart={setCart} setData={setData} />}>
+          <Route index element={<Products data={data} cart={cart} setCart={setCart} error={error} businessID={businessID} />} />
           <Route path='Auth' element={<Auth loginID={loginID} setLoginID={setLoginID} />} />
-          <Route path='Admin' element={<Admin products={products} setProducts={setProducts} />} />
-          <Route path='View' element={<Products products={products} cart={cart} setCart={setCart} />} />
-        </Route>
-        <Route path='/:businessName' element={<Layout cart={cart} setCart={setCart} setProducts={setProducts} />}>
-          <Route index element={<Products products={products} cart={cart} setCart={setCart} />} />
+          <Route path='Admin' element={<Admin data={data} setData={setData} />} />
+          <Route path='View' element={<Products data={data} cart={cart} setCart={setCart} />} />
         </Route>
       </Routes>
     </BrowserRouter>

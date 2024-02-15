@@ -50,6 +50,7 @@ const Layout = ({ cart, setCart, setProducts }) => {
         setProducts={setProducts}
         isModalOpen={isCartModalOpen}
         closeModal={closeCartModal}
+        ariaHideApp={false}
       />
     </div>
   );

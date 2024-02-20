@@ -25,7 +25,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://192.168.68.110:5000/get_products_services_events?businessID=${businessID}`);
+        const response = await axios.get(`http://127.0.0.1:5000/get_products_services_events?businessID=${businessID}`);
         setData(response.data);
         setError(null);
         setIsDataLoading(false); // Set loading to false when data is fetched
@@ -49,11 +49,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/:businessID' element={<Layout cart={cart} setCart={setCart} setData={setData} />}>
+        <Route path='/:businessID' element={<Layout cart={cart} setCart={setCart} setData={setData} businessID={businessID} />}>
           <Route index element={<Products data={data} cart={cart} setCart={setCart} error={error} businessID={businessID} />} />
           <Route path='Auth' element={<Auth loginID={loginID} setLoginID={setLoginID} />} />
           <Route path='Admin' element={<Admin data={data} setData={setData} />} />
-          <Route path='View' element={<Products data={data} cart={cart} setCart={setCart} />} />
         </Route>
       </Routes>
     </BrowserRouter>

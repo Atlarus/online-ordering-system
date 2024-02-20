@@ -88,8 +88,8 @@ const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
                     +
                   </button>
                 </td>
-                <td className="text-right">${item.price}</td>
-                <td className="text-right">${(item.quantity * item.price)}</td>
+                <td className="text-right">${item.price.toFixed(2)}</td>
+                <td className="text-right">${(item.quantity * item.price).toFixed(2)}</td>
                 <td className="text-right">
                   <button
                     onClick={() => removeFromCart(item.id)}
@@ -103,7 +103,7 @@ const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
           </tbody>
         </table>
         <div className="mt-4 text-right">
-          <p className="font-semibold">Overall Total: ${overallTotal}</p>
+          <p className="font-semibold">Overall Total: ${overallTotal.toFixed(2)}</p>
         </div>
         <button
           onClick={placeOrder}

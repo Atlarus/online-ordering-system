@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import CartModal from './CartModal';
 
-const Layout = ({ cart, setCart, setProducts }) => {
+const Layout = ({ cart, setCart, setProducts, businessID }) => {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
-  const { businessName } = useParams();
 
   const openCartModal = () => {
     setIsCartModalOpen(true);
@@ -18,17 +17,17 @@ const Layout = ({ cart, setCart, setProducts }) => {
     <div>
       <nav className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-4 shadow-xl">
         <div className="flex items-center justify-between">
-          <Link to={`/${businessName}`} className="text-white text-2xl font-bold">
-            {businessName}
+          <Link to={`/${businessID}`} className="text-white text-2xl font-bold">
+            {businessID}
           </Link>
           <div className="flex items-center space-x-4">
-            <Link to={`/${businessName}`} className="text-white hover:text-gray-300">
+            <Link to={`/${businessID}`} className="text-white hover:text-gray-300">
               Home
             </Link>
-            <Link to={`/${businessName}/Auth`} className="text-white hover:text-gray-300">
+            <Link to={`/${businessID}/auth`} className="text-white hover:text-gray-300">
               Auth
             </Link>
-            <Link to={`/${businessName}/Admin`} className="text-white hover:text-gray-300">
+            <Link to={`/${businessID}/admin`} className="text-white hover:text-gray-300">
               Admin
             </Link>
             <button

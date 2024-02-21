@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
-import Products from './pages/components/Products';
+import View from './pages/View/View';
 import Layout from './pages/Layout';
 import Admin from './pages/Admin';
 import Dashboard from './pages/Dashboard';
@@ -56,7 +56,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path={`/${businessID}`} element={<Layout cart={cart} setCart={setCart} setData={setData} businessID={businessID} />}>
-          <Route index element={<Products data={data} cart={cart} setCart={setCart} businessID={businessID} />} />
+          <Route index element={<View data={data} cart={cart} setCart={setCart} businessID={businessID} />} />
           <Route path='Admin' element={<Admin data={data} setData={setData} />} />
           <Route path='*' element={<NotFound />} />
         </Route>

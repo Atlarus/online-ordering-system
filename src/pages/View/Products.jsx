@@ -74,9 +74,20 @@ const Products = ({ products, cart, setCart, searchInput }) => {
         setSelectedItemIndex(event.target.value);
       };
 
+    if (products === null) {
+    return (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-white z-50">
+        <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg">
+            <p className="text-lg font-semibold mb-2">Business Not Found</p>
+            <p className="text-sm">We couldn't locate the specified business. Please review the details for any spelling or input errors.</p>
+        </div>
+        </div>
+    )
+    }
+
     return (
         <div>
-            <h1 className="text-4xl font-extrabold mb-6">Product Catalog</h1>
+            <h2 className="text-2xl font-bold mb-4">Product</h2>
             <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {products
                     .filter((product) =>

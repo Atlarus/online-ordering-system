@@ -1,18 +1,20 @@
-import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import axios from 'axios';
 import './App.css';
 import Products from './pages/components/Products';
-import Auth from './pages/Auth';
-import React, { useState, useEffect } from 'react';
 import Layout from './pages/Layout';
 import Admin from './pages/Admin';
-import axios from 'axios';
+import Dashboard from './pages/Dashboard';
+import NotFound from './pages/NotFound';
 
 function App() {
-  const [loginID, setLoginID] = useState('');
   const [cart, setCart] = useState([]);
   const [data, setData] = useState({});
   const [error, setError] = useState(null);
   const [isDataLoading, setIsDataLoading] = useState(true);
+  const [exist, setExist] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const getBusinessIDFromPath = () => {
     const pathArray = window.location.pathname.split('/');
@@ -26,15 +28,17 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://127.0.0.1:5000/get_products_services_events?businessID=${businessID}`);
-        setData(response.data);
-        setError(null);
-        setIsDataLoading(false); // Set loading to false when data is fetched
-        console.log("pass");
+        if (response) {
+          setData(response.data);
+          setError(null);
+          setIsDataLoading(false);
+        } else {
+          setExist(false);
+        }
       } catch (error) {
         setError(error.response.data.error);
         setData(null);
-        setIsDataLoading(false); // Set loading to false even on error
-        console.log("fail");
+        setIsDataLoading(false);
       }
     };
 
@@ -42,18 +46,21 @@ function App() {
   }, [businessID]);
 
   if (isDataLoading) {
-    // Render a loading indicator or a placeholder while data is being fetched
-    return <div>Loading...</div>;
+    return (
+      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-75 z-50">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+      </div>
+    );
   }
-
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/:businessID' element={<Layout cart={cart} setCart={setCart} setData={setData} businessID={businessID} />}>
-          <Route index element={<Products data={data} cart={cart} setCart={setCart} error={error} businessID={businessID} />} />
-          <Route path='Auth' element={<Auth loginID={loginID} setLoginID={setLoginID} />} />
+        <Route path={`/${businessID}`} element={<Layout cart={cart} setCart={setCart} setData={setData} businessID={businessID} />}>
+          <Route index element={<Products data={data} cart={cart} setCart={setCart} businessID={businessID} />} />
           <Route path='Admin' element={<Admin data={data} setData={setData} />} />
+          <Route path='*' element={<NotFound />} />
         </Route>
+        <Route path='/Dashboard' element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );

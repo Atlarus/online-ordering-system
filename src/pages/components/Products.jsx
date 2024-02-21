@@ -4,11 +4,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Products = ({ data, cart, setCart }) => {
   const [searchInput, setSearchInput] = useState('');
-  const { businessID, events, services, products } = data;
   const [selectedOptions, setSelectedOptions] = useState({});
 
   // Manage selected quantity for each product
   const [selectedQuantities, setSelectedQuantities] = useState({});
+  const [selectedItemIndex, setSelectedItemIndex] = useState(null);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+  const [selectedKeyIndex, setSelectedKeyIndex] = useState(null);
 
   const addToCart = (product) => {
     const selectedQuantity = selectedQuantities[product.id] || 1;
@@ -68,15 +70,24 @@ const Products = ({ data, cart, setCart }) => {
     });
   };
 
-  const handleOptionChange = (productIndex, optionType, optionValue) => {
-    setSelectedOptions({
-      ...selectedOptions,
-      [productIndex]: {
-        ...selectedOptions[productIndex],
-        [optionType]: optionValue,
-      },
-    });
+  const handleSelectChange = (optionIndex, keyIndex, event) => {
+    setSelectedOptionIndex(optionIndex);
+    setSelectedKeyIndex(keyIndex);
+    setSelectedItemIndex(event.target.value);
   };
+
+  if (data === null) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-white z-50">
+      <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg">
+        <p className="text-lg font-semibold mb-2">Business Not Found</p>
+        <p className="text-sm">We couldn't locate the specified business. Please review the details for any spelling or input errors.</p>
+      </div>
+    </div>
+    )
+  }
+  
+  const { businessID, events, services, products } = data;
 
   return (
     <div>
@@ -89,52 +100,65 @@ const Products = ({ data, cart, setCart }) => {
           onChange={(e) => setSearchInput(e.target.value)}
           className="w-full mb-4 border border-gray-300 px-2 py-1 rounded"
         />
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products
             .filter((product) =>
               product.name.toLowerCase().includes(searchInput.toLowerCase()) ||
               product.tags.some((tag) => tag.toLowerCase().includes(searchInput.toLowerCase()))
             )
-            .map((product) => {
-              let keysValues = [];
+            .map((product, productIndex) => {
               return (
-
                 <li key={product.productID} className="mb-8 p-6 bg-white rounded-lg shadow-lg">
                   <h3 className="text-xl font-semibold mb-2 text-gray-800">{product.name}</h3>
                   <p className="text-gray-600 mb-4">{product.desc}</p>
-
                   {product.options.map((option, optionIndex) => {
-  // Check if the option is an object
-  if (typeof option === 'object') {
-    // Get the keys of the current option
-    const keysValues = Object.keys(option);
+                    // Check if the option is an object
+                    if (typeof option === 'object') {
+                      // Get the keys of the current option
+                      const keysValues = Object.keys(option);
 
-    // Render labels for each key and its value
-    return (
-      <div key={optionIndex}>
-        {keysValues.map((key, index) => (
-          <div key={index}>
-            <label>{key}: </label>
-            {Array.isArray(option[key]) ? (
-              // Render as dropdown if the value is an array
-              <select>
-                {option[key].map((item, itemIndex) => (
-                  <option key={itemIndex}>
-                    {typeof item === 'object' ? JSON.stringify(item) : item}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              // Render as a regular value if not an array
-              <span>{option[key]}</span>
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  }
-  return null; // or handle non-object options accordingly
-})}
+                      // Render labels for each key and its value
+                      return (
+                        <div key={optionIndex}>
+                          {keysValues.map((key, keyIndex) => (
+                            key.includes("amount") ? (
+                              <label>Amount</label>
+                            ) : (
+                              <div key={keyIndex}>
+                                <label>{key}: </label>
+                                {Array.isArray(option[key]) ? (
+                                  // Render as dropdown if the value is an array
+                                  <select onChange={(event) => handleSelectChange(optionIndex, keyIndex, event)}>
+                                    <option selected disabled>Select option</option>
+                                    {option[key].map((item, itemIndex) => (
+                                      <option key={itemIndex}>
+                                        {typeof item === 'object' ? (
+                                          Object.keys(item).map((subKey) => (
+                                            item[subKey]
+                                          ))
+                                        ) : (
+                                          item
+                                        )}
+                                      </option>
+                                    ))}
+                                  </select>
+                                ) : (
+                                  // Render as a regular value if not an array
+                                  <span>{option[key]}</span>
+                                )}
+                              </div>
+                            )
+                          ))}
+                        </div>
+                      );
+                    }
+                    return null; // or handle non-object options accordingly
+                  })}
+
+                  <p>Current Stock: {selectedItemIndex !== null ? (
+                    [Object.keys(product.options[selectedOptionIndex])[selectedKeyIndex]][selectedItemIndex]
+                    ) : 'N/A'}</p>
+
 
                   {product.price !== null && product.price !== undefined && product.price > 0 && (
                     <h3 className="text-xl font-semibold mb-2 text-gray-800">${product.price.toFixed(2)}</h3>

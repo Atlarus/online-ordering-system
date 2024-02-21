@@ -1,30 +1,38 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // Sample authentication functions (replace with actual authentication logic)
-const loginCheck = async (username, password) => {
-  // Simulate a login request to the server
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      // Replace with actual authentication logic
-      if (username === 'user1' && password === '123') {
-        resolve({ username: 'user1', token: 'exampleToken' });
-      } else if (username === 'user2' && password === '123') {
-        resolve({ username: 'user2', token: 'exampleToken2' });
-      } else {
-        reject(new Error('Invalid credentials'));
-      }
-    }, 1000);
-  });
+const loginCheck = async (businessID, userID, password) => {
+
+  try {
+    const response = await axios.post('http://localhost:5000/business_login', {
+      businessID: businessID,
+      userID: userID,
+      password: password,
+    });
+
+    // Check the response and take appropriate action
+    if (response.data.error) {
+      console.error(response.data.error);
+      // Handle error, show a message, etc.
+    } else {
+      // Successful login, proceed with your logic
+      return true;
+    }
+  } catch (error) {
+    console.error('Error during login:', error);
+    // Handle error, show a message, etc.
+  }
 };
 
 // React component for User Authentication
-const Auth = ({ loginID, setLoginID }) => {
+const Login = ({ loginID, setLoginID, businessID }) => {
   // Const for navigation
   const navigate = useNavigate();
 
   // State for form input values
-  const [username, setUsername] = useState('');
+  const [userID, setUserID] = useState('');
   const [password, setPassword] = useState('');
 
   // State for error handling
@@ -38,26 +46,17 @@ const handleLogin = async (e) => {
   e.preventDefault();
 
   try {
-    const user = await loginCheck(username, password);
-    // Replace with actual authentication logic and token handling
-    console.log('Login successful:', user);
-    setIsLoggedIn(true);
-    setError(null);
-    setLoginID(username);
-
-    // Check if loginID is 'user1' and navigate accordingly
-    if (username === 'user1') {
-      navigate('/Business Name');
-    } else if (username === 'user2') {
-      // Navigate to the "/Business Name" route for user2
-      navigate('/Teratak Seni');
+    const user = await loginCheck(businessID, userID, password);
+    if(user){
+      console.log('Login successful:', user);
+      setIsLoggedIn(true);
+      setError(null);
+      setLoginID(userID);
     } else {
-      // Navigate to a different route for other users if needed
-      navigate('/Admin');
+      console.log(error);
     }
-  } catch (error) {
-    console.error('Login failed:', error.message);
-    setError('Invalid credentials. Please try again.');
+  } catch(error) {
+    alert(error);
   }
 };
 
@@ -67,16 +66,16 @@ const handleLogin = async (e) => {
         <h2 className="text-3xl font-bold mb-4">Login</h2>
         {isLoggedIn ? (
           <div>
-            <p className="text-xl font-semibold mb-4">Welcome, {username}!</p>
+            <p className="text-xl font-semibold mb-4">Welcome, {userID}!</p>
             {/* Include logout functionality here */}
           </div>
         ) : (
           <form onSubmit={handleLogin} className="space-y-4">
-            <label className="block text-sm font-semibold">Username:</label>
+            <label className="block text-sm font-semibold">userID:</label>
             <input
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={userID}
+              onChange={(e) => setUserID(e.target.value)}
               className="w-full border p-2 rounded-md"
             />
             <label className="block text-sm font-semibold">Password:</label>
@@ -100,4 +99,4 @@ const handleLogin = async (e) => {
   );
 };
 
-export default Auth;
+export default Login;

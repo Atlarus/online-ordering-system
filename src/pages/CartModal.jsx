@@ -61,6 +61,7 @@ const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
           <thead>
             <tr>
               <th className="text-left">Product</th>
+              <th className="text-left">Description</th>
               <th className="text-left">Quantity</th>
               <th className="text-right">Price</th>
               <th className="text-right">Total</th>

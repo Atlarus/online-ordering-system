@@ -3,9 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import View from './pages/View/View';
-import Layout from './pages/Layout';
-import Admin from './pages/Admin';
-import Dashboard from './pages/Dashboard';
+import Layout from './pages/Layout/Layout';
+import Dashboard from './pages/Dashboard/Dashboard';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -13,12 +12,11 @@ function App() {
   const [data, setData] = useState({});
   const [error, setError] = useState(null);
   const [isDataLoading, setIsDataLoading] = useState(true);
-  const [exist, setExist] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const getBusinessIDFromPath = () => {
     const pathArray = window.location.pathname.split('/');
-    const businessIDIndex = pathArray.indexOf('') + 1; // Assuming businessID is the first parameter
+    const businessIDIndex = pathArray.indexOf('') + 2; // Assuming businessID is the first parameter
     return pathArray[businessIDIndex];
   };
 
@@ -32,8 +30,6 @@ function App() {
           setData(response.data);
           setError(null);
           setIsDataLoading(false);
-        } else {
-          setExist(false);
         }
       } catch (error) {
         setError(error.response.data.error);
@@ -55,12 +51,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={`/${businessID}`} element={<Layout cart={cart} setCart={setCart} setData={setData} businessID={businessID} />}>
+        <Route path='/Dashboard' element={<Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
+        <Route path={`/v/${businessID}`} element={<Layout cart={cart} setCart={setCart} setData={setData} businessID={businessID} />}>
           <Route index element={<View data={data} cart={cart} setCart={setCart} businessID={businessID} />} />
-          <Route path='Admin' element={<Admin data={data} setData={setData} />} />
           <Route path='*' element={<NotFound />} />
         </Route>
-        <Route path='/Dashboard' element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );

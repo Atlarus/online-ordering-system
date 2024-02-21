@@ -1,6 +1,6 @@
 // Products.jsx
 import React, { useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Products = ({ products, cart, setCart, searchInput }) => {
@@ -87,8 +87,8 @@ const Products = ({ products, cart, setCart, searchInput }) => {
 
     return (
         <div>
-            <h2 className="text-2xl font-bold mb-4">Product</h2>
-            <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <h2 className="text-2xl font-bold mb-4">Products</h2>
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {products
                     .filter((product) =>
                         product.name.toLowerCase().includes(searchInput.toLowerCase()) ||

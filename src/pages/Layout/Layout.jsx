@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import CartModal from './CartModal';
 
 const Layout = ({ cart, setCart, setProducts, businessID }) => {
@@ -16,19 +16,16 @@ const Layout = ({ cart, setCart, setProducts, businessID }) => {
   return (
     <div>
       <nav className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-4 shadow-xl">
-        <div className="flex items-center justify-between">
-          <Link to={`/${businessID}`} className="text-white text-2xl font-bold">
+        <div className="flex items-center justify-between flex-wrap"> {/* Use flex-wrap to allow items to wrap on smaller screens */}
+          <Link to={`/v/${businessID}`} className="text-white text-2xl font-bold mr-4 mb-4 sm:mb-0"> {/* Add margin bottom on smaller screens */}
             {businessID}
           </Link>
           <div className="flex items-center space-x-4">
-            <Link to={`/${businessID}`} className="text-white hover:text-gray-300">
+            <Link to={`/v/${businessID}`} className="text-white hover:text-gray-300">
               Home
             </Link>
-            <Link to={`/${businessID}/auth`} className="text-white hover:text-gray-300">
-              Auth
-            </Link>
-            <Link to={`/${businessID}/admin`} className="text-white hover:text-gray-300">
-              Admin
+            <Link to={`/Dashboard`} className="text-white hover:text-gray-300">
+              Dashboard
             </Link>
             <button
               onClick={openCartModal}

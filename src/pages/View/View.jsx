@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Products from './Products';
 import Services from './Services';
 import Events from './Events';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const View = ({ data, cart, setCart }) => {
@@ -12,7 +12,7 @@ const View = ({ data, cart, setCart }) => {
   if (data === null) {
     return (
       <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-white z-50">
-        <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg">
+        <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-6 rounded-lg shadow-lg">
           <p className="text-lg font-semibold mb-2">Business Not Found</p>
           <p className="text-sm">We couldn't locate the specified business. Please review the details for any spelling or input errors.</p>
         </div>

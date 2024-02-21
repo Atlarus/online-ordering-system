@@ -6,11 +6,12 @@ const Services = ({ services, searchInput }) => {
     return (
         <div>
             <h2 className="text-2xl font-bold mb-4">Services</h2>
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.filter((service) =>
                 service.name.toLowerCase().includes(searchInput.toLowerCase()) ||
                 service.tags.some((tag) => tag.toLowerCase().includes(searchInput.toLowerCase()))
             ).map((service) => (
-                <div key={service.serviceID} className="mb-4 border p-4 rounded-md">
+                <li key={service.serviceID} className="mb-8 p-6 bg-white rounded-lg shadow-lg">
                     <h3 className="text-xl font-bold mb-2">{service.name}</h3>
                     <p className="text-gray-600 mb-2">{service.desc}</p>
                     <p className="text-gray-700 mb-2">${service.price.toFixed(2)}</p>
@@ -26,8 +27,9 @@ const Services = ({ services, searchInput }) => {
                             </li>
                         ))}
                     </ul>
-                </div>
+                </li>
             ))}
+            </ul>
         </div>
     );
 };

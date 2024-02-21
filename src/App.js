@@ -16,7 +16,7 @@ function App() {
 
   const getBusinessIDFromPath = () => {
     const pathArray = window.location.pathname.split('/');
-    const businessIDIndex = pathArray.indexOf('') + 2; // Assuming businessID is the first parameter
+    const businessIDIndex = pathArray.indexOf('v') + 1; // Assuming 'v' is part of the path
     return pathArray[businessIDIndex];
   };
 
@@ -38,8 +38,15 @@ function App() {
       }
     };
 
-    fetchData();
-  }, [businessID]);
+    // Fetch data if the path does not include /Dashboard
+    if (!window.location.pathname.includes('/Dashboard')) {
+      fetchData();
+    } else {
+      // If on /Dashboard, set data to an empty object and mark loading as false
+      setData({});
+      setIsDataLoading(false);
+    }
+  }, [window.location.pathname]); // Watch for changes in the entire path
 
   if (isDataLoading) {
     return (
@@ -51,8 +58,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/Dashboard' element={<Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
-        <Route path={`/v/${businessID}`} element={<Layout cart={cart} setCart={setCart} setData={setData} businessID={businessID} />}>
+        <Route path='/Dashboard' element={<Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path={`/v/:businessID`} element={<Layout cart={cart} setCart={setCart} setData={setData} businessID={businessID} />}>
           <Route index element={<View data={data} cart={cart} setCart={setCart} businessID={businessID} />} />
           <Route path='*' element={<NotFound />} />
         </Route>

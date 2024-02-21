@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import DOMPurify from 'dompurify';
 
 // Sample authentication functions (replace with actual authentication logic)
 const loginCheck = async (businessID, userID, password) => {
@@ -27,64 +27,81 @@ const loginCheck = async (businessID, userID, password) => {
 };
 
 // React component for User Authentication
-const Login = ({ loginID, setLoginID, businessID }) => {
-  // Const for navigation
-  const navigate = useNavigate();
-
+const Login = ({ setIsLoggedIn }) => {
   // State for form input values
+  const [businessID, setBusinessID] = useState('');
   const [userID, setUserID] = useState('');
   const [password, setPassword] = useState('');
 
   // State for error handling
   const [error, setError] = useState(null);
-
-  // State for indicating if the user is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const alphanumericRegex = /^[a-zA-Z0-9]+$/;
 
   // Function to handle form submission
-const handleLogin = async (e) => {
-  e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  try {
-    const user = await loginCheck(businessID, userID, password);
-    if(user){
-      console.log('Login successful:', user);
-      setIsLoggedIn(true);
-      setError(null);
-      setLoginID(userID);
-    } else {
-      console.log(error);
+    const sanitizedBusinessID = DOMPurify.sanitize(businessID);
+    const sanitizedUserID = DOMPurify.sanitize(userID);
+
+    if (!sanitizedBusinessID || !sanitizedUserID || !password) {
+      setError('All fields are required.');
+      return;
     }
-  } catch(error) {
-    alert(error);
-  }
-};
+
+    if (!alphanumericRegex.test(sanitizedBusinessID) || !alphanumericRegex.test(sanitizedUserID)) {
+      setError('Invalid characters in Business ID or User ID.');
+      return;
+    }
+
+    try {
+      const user = await loginCheck(sanitizedBusinessID, sanitizedUserID, password);
+      if (user) {
+        console.log('Login successful:', user);
+        setIsLoggedIn(true);
+        setError(null);
+      } else {
+        // Set error state when login is not successful
+        setError('Login failed. Please check your credentials.');
+      }
+    } catch (error) {
+      // Set error state in case of an exception
+      setError(error.response);
+    }
+  };
 
   return (
     <div className="pt-8 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h2 className="text-3xl font-bold mb-4">Login</h2>
-        {isLoggedIn ? (
-          <div>
-            <p className="text-xl font-semibold mb-4">Welcome, {userID}!</p>
-            {/* Include logout functionality here */}
-          </div>
-        ) : (
           <form onSubmit={handleLogin} className="space-y-4">
-            <label className="block text-sm font-semibold">userID:</label>
+            <label className="block text-sm font-semibold">Business ID:</label>
+            <input
+              type="text"
+              value={businessID}
+              onChange={(e) => setBusinessID(e.target.value)}
+              className="w-full border p-2 rounded-md"
+              required
+            />
+
+            <label className="block text-sm font-semibold">user ID:</label>
             <input
               type="text"
               value={userID}
               onChange={(e) => setUserID(e.target.value)}
               className="w-full border p-2 rounded-md"
+              required
             />
+
             <label className="block text-sm font-semibold">Password:</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border p-2 rounded-md"
+              required
             />
+
             <button
               type="submit"
               className="bg-purple-500 text-white p-2 rounded-md hover:bg-purple-600 focus:outline-none"
@@ -93,7 +110,6 @@ const handleLogin = async (e) => {
             </button>
             {error && <p className="text-red-500">{error}</p>}
           </form>
-        )}
       </div>
     </div>
   );

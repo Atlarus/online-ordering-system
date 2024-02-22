@@ -46,7 +46,7 @@ function App() {
       setData({});
       setIsDataLoading(false);
     }
-  }, [window.location.pathname]); // Watch for changes in the entire path
+  }, [businessID]);
 
   if (isDataLoading) {
     return (
@@ -59,7 +59,16 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/Dashboard' element={<Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path={`/v/:businessID`} element={<Layout cart={cart} setCart={setCart} setData={setData} businessID={businessID} />}>
+        <Route path={`/v/:businessID`} element={
+        <Layout 
+        cart={cart} 
+        setCart={setCart} 
+        data={data} 
+        setData={setData} 
+        businessID={businessID}
+        setError={setError}
+        setIsDataLoading={setIsDataLoading}
+        />}>
           <Route index element={<View data={data} cart={cart} setCart={setCart} businessID={businessID} />} />
           <Route path='*' element={<NotFound />} />
         </Route>

@@ -113,11 +113,11 @@ const Products = ({ products, cart, setCart, searchInput }) => {
                                                         <label>Amount</label>
                                                     ) : (
                                                         <div key={keyIndex}>
-                                                            <label>{key}: </label>
+                                                            <label key={keyIndex}>{key}: </label>
                                                             {Array.isArray(option[key]) ? (
                                                                 // Render as dropdown if the value is an array
                                                                 <select onChange={(event) => handleSelectChange(optionIndex, keyIndex, event)}>
-                                                                    <option selected disabled>Select option</option>
+                                                                    <option defaultValue={''} disabled>Select option</option>
                                                                     {option[key].map((item, itemIndex) => (
                                                                         <option key={itemIndex}>
                                                                             {typeof item === 'object' ? (

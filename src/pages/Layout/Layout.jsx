@@ -2,8 +2,29 @@ import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import CartModal from './CartModal';
 
-const Layout = ({ cart, setCart, setProducts, businessID }) => {
+import axios from 'axios';
+
+const Layout = ({ cart, setCart, setData, businessID, data, setError, setIsDataLoading }) => {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:5000/get_products_services_events?businessID=${businessID}`);
+      if (response) {
+        setData(response.data);
+        setError(null);
+        setIsDataLoading(false);
+      }
+    } catch (error) {
+      setError(error.response.data.error);
+      setData(null);
+      setIsDataLoading(false);
+    }
+  };
+
+  if(data === null || data === undefined){
+    fetchData();
+  }
 
   const openCartModal = () => {
     setIsCartModalOpen(true);
@@ -29,9 +50,9 @@ const Layout = ({ cart, setCart, setProducts, businessID }) => {
             </Link>
             <button
               onClick={openCartModal}
-              className="bg-yellow-500 text-gray-800 px-4 py-2 rounded hover:bg-yellow-600 focus:outline-none"
+              className="bg-yellow-500 text-gray-800 px-4 py-2 rounded hover:bg-yellow-600 focus:outline-none flex items-center"
             >
-              Cart
+              <i class="fa-solid fa-cart-shopping"></i>
             </button>
           </div>
         </div>
@@ -43,7 +64,6 @@ const Layout = ({ cart, setCart, setProducts, businessID }) => {
       <CartModal
         cart={cart}
         setCart={setCart}
-        setProducts={setProducts}
         isModalOpen={isCartModalOpen}
         closeModal={closeCartModal}
         ariaHideApp={false}

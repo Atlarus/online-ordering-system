@@ -27,6 +27,9 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                             <Link to={`/Dashboard`} className="text-white hover:text-gray-300">
                                 Dashboard
                             </Link>
+                            <Link to={`/v/${businessID}`} className="text-white hover:text-gray-300">
+                                View
+                            </Link>
                         </div>
                     </nav>
                     <Auth setIsLoggedIn={setIsLoggedIn} />

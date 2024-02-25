@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import CartModal from './CartModal';
-
 import axios from 'axios';
 
 const Layout = ({ cart, setCart, setData, businessID, data, setError, setIsDataLoading }) => {
@@ -52,7 +51,7 @@ const Layout = ({ cart, setCart, setData, businessID, data, setError, setIsDataL
               onClick={openCartModal}
               className="bg-yellow-500 text-gray-800 px-4 py-2 rounded hover:bg-yellow-600 focus:outline-none flex items-center"
             >
-              <i class="fa-solid fa-cart-shopping"></i>
+              <i className="fa-solid fa-cart-shopping"></i>
             </button>
           </div>
         </div>

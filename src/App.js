@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import View from './pages/View/View';
 import Layout from './pages/Layout/Layout';
 import Dashboard from './pages/Dashboard/Dashboard';
 import NotFound from './pages/NotFound';
+import Demo from './pages/Demo/Demo';
+import Loader from './components/Loader';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -13,9 +15,10 @@ function App() {
   const [error, setError] = useState(null);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const location = useLocation();
 
   const getBusinessIDFromPath = () => {
-    const pathArray = window.location.pathname.split('/');
+    const pathArray = location.pathname.split('/');
     const businessIDIndex = pathArray.indexOf('v') + 1; // Assuming 'v' is part of the path
     return pathArray[businessIDIndex];
   };
@@ -39,41 +42,37 @@ function App() {
     };
 
     // Fetch data if the path does not include /Dashboard
-    if (!window.location.pathname.includes('/Dashboard')) {
+    if (location.pathname.includes('/v/')) {
       fetchData();
     } else {
       // If on /Dashboard, set data to an empty object and mark loading as false
       setData({});
       setIsDataLoading(false);
     }
-  }, [businessID]);
+  }, [businessID, location.pathname]);
 
   if (isDataLoading) {
-    return (
-      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-75 z-50">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
-      </div>
-    );
+    return <Loader />
   }
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/Dashboard' element={<Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path={`/v/:businessID`} element={
-        <Layout 
-        cart={cart} 
-        setCart={setCart} 
-        data={data} 
-        setData={setData} 
-        businessID={businessID}
-        setError={setError}
-        setIsDataLoading={setIsDataLoading}
+    <Routes>
+      <Route path='/' element={<Demo />} />
+      <Route path='/Dashboard' element={<Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
+      <Route path={`/v/:businessID`} element={
+        <Layout
+          cart={cart}
+          setCart={setCart}
+          data={data}
+          setData={setData}
+          businessID={businessID}
+          setError={setError}
+          setIsDataLoading={setIsDataLoading}
         />}>
-          <Route index element={<View data={data} cart={cart} setCart={setCart} businessID={businessID} />} />
-          <Route path='*' element={<NotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        <Route index element={<View data={data} cart={cart} setCart={setCart} businessID={businessID} />} />
+      </Route>
+      <Route path='/*' element={<NotFound />} />
+    </Routes>
   );
 }
 

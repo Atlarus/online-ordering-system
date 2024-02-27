@@ -3,22 +3,23 @@ import axios from 'axios';
 import DOMPurify from 'dompurify';
 
 // Sample authentication functions (replace with actual authentication logic)
-const loginCheck = async (businessID, userID, password) => {
+const loginCheck = async (formBusinessID, userID, password) => {
 
   try {
     const response = await axios.post('http://localhost:5000/business_login', {
-      businessID: businessID,
+      formBusinessID: formBusinessID,
       userID: userID,
       password: password,
     });
-
+    console.log(response);
     // Check the response and take appropriate action
     if (response.data.error) {
       console.error(response.data.error);
       // Handle error, show a message, etc.
     } else {
       // Successful login, proceed with your logic
-      return true;
+      
+      return response.data.token;
     }
   } catch (error) {
     console.error('Error during login:', error);
@@ -27,9 +28,9 @@ const loginCheck = async (businessID, userID, password) => {
 };
 
 // React component for User Authentication
-const Login = ({ setIsLoggedIn }) => {
+const Login = ({ setIsLoggedIn, setBusinessID, setToken }) => {
   // State for form input values
-  const [businessID, setBusinessID] = useState('');
+  const [formBusinessID, setFormBusinessID] = useState('');
   const [userID, setUserID] = useState('');
   const [password, setPassword] = useState('');
 
@@ -41,24 +42,26 @@ const Login = ({ setIsLoggedIn }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const sanitizedBusinessID = DOMPurify.sanitize(businessID);
+    const sanitizedFormBusinessID = DOMPurify.sanitize(formBusinessID);
     const sanitizedUserID = DOMPurify.sanitize(userID);
 
-    if (!sanitizedBusinessID || !sanitizedUserID || !password) {
+    if (!sanitizedFormBusinessID || !sanitizedUserID || !password) {
       setError('All fields are required.');
       return;
     }
 
-    if (!alphanumericRegex.test(sanitizedBusinessID) || !alphanumericRegex.test(sanitizedUserID)) {
+    if (!alphanumericRegex.test(sanitizedFormBusinessID) || !alphanumericRegex.test(sanitizedUserID)) {
       setError('Invalid characters in Business ID or User ID.');
       return;
     }
 
     try {
-      const user = await loginCheck(sanitizedBusinessID, sanitizedUserID, password);
-      if (user) {
-        console.log('Login successful:', user);
+      const token = await loginCheck(sanitizedFormBusinessID, sanitizedUserID, password);
+      if (token) {
+        localStorage.setItem('token', token);
+        setToken(token);
         setIsLoggedIn(true);
+        setBusinessID(sanitizedFormBusinessID);
         setError(null);
       } else {
         // Set error state when login is not successful
@@ -78,8 +81,8 @@ const Login = ({ setIsLoggedIn }) => {
             <label className="block text-sm font-semibold">Business ID:</label>
             <input
               type="text"
-              value={businessID}
-              onChange={(e) => setBusinessID(e.target.value)}
+              value={formBusinessID}
+              onChange={(e) => setFormBusinessID(e.target.value)}
               className="w-full border p-2 rounded-md"
               required
             />

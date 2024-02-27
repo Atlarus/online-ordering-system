@@ -1,9 +1,17 @@
 import React from "react";
+import { useState } from "react";
 import Login from "./Login";
 
-const Auth = (setIsLoggedIn) => {
+const Auth = ({ setIsLoggedIn, setBusinessID, setToken }) => {
+    const [authFunction, setAuthFunction] = useState('login');
+
     return(
-        <Login setIsLoggedIn={setIsLoggedIn}/>
+        authFunction ? (
+            <Login setIsLoggedIn={setIsLoggedIn} setBusinessID={setBusinessID} setToken={setToken}/>
+        ) :(
+            <div>register</div>
+        )
+        
     )
 }
 

@@ -33,45 +33,46 @@ const View = ({ data, cart, setCart }) => {
 
   return (
 
-    <div className="p-6">
-      {shouldRenderFilterButtons && (
-        <div className="flex space-x-2 mb-4">
-          <button
-            onClick={() => handleFilterChange('all')}
-            className={`px-4 py-2 rounded-md ${selectedFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-700'
-              } hover:bg-gray-900 focus:outline-none focus:ring focus:border-gray-600`}
-          >
-            All
-          </button>
-          {shouldRenderProductsButton && (
-            <button
-              onClick={() => handleFilterChange('products')}
-              className={`px-4 py-2 rounded-md ${selectedFilter === 'products' ? 'bg-pink-500 text-white' : 'bg-gray-200 text-gray-700'
-                } hover:bg-pink-600 focus:outline-none focus:ring focus:border-pink-300`}
-            >
-              Products
-            </button>
-          )}
-          {shouldRenderServicesButton && (
-            <button
-              onClick={() => handleFilterChange('services')}
-              className={`px-4 py-2 rounded-md ${selectedFilter === 'services' ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'
-                } hover:bg-purple-600 focus:outline-none focus:ring focus:border-purple-300`}
-            >
-              Services
-            </button>
-          )}
-          {shouldRenderEventsButton && (
-            <button
-              onClick={() => handleFilterChange('events')}
-              className={`px-4 py-2 rounded-md ${selectedFilter === 'events' ? 'bg-indigo-500 text-white' : 'bg-gray-200 text-gray-700'
-                } hover:bg-indigo-600 focus:outline-none focus:ring focus:border-indigo-300`}
-            >
-              Events
-            </button>
-          )}
-        </div>
+<div className="p-6">
+  {shouldRenderFilterButtons && (
+    <div className="flex space-x-2 overflow-x-auto mb-4">
+      <button
+        onClick={() => handleFilterChange('all')}
+        className={`px-4 py-2 rounded-md ${selectedFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-700'
+          } hover:bg-gray-900 focus:outline-none focus:ring focus:border-gray-600`}
+      >
+        All
+      </button>
+      {shouldRenderProductsButton && (
+        <button
+          onClick={() => handleFilterChange('products')}
+          className={`px-4 py-2 rounded-md ${selectedFilter === 'products' ? 'bg-pink-500 text-white' : 'bg-gray-200 text-gray-700'
+            } hover:bg-pink-600 focus:outline-none focus:ring focus:border-pink-300`}
+        >
+          Products
+        </button>
       )}
+      {shouldRenderServicesButton && (
+        <button
+          onClick={() => handleFilterChange('services')}
+          className={`px-4 py-2 rounded-md ${selectedFilter === 'services' ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'
+            } hover:bg-purple-600 focus:outline-none focus:ring focus:border-purple-300`}
+        >
+          Services
+        </button>
+      )}
+      {shouldRenderEventsButton && (
+        <button
+          onClick={() => handleFilterChange('events')}
+          className={`px-4 py-2 rounded-md ${selectedFilter === 'events' ? 'bg-indigo-500 text-white' : 'bg-gray-200 text-gray-700'
+            } hover:bg-indigo-600 focus:outline-none focus:ring focus:border-indigo-300`}
+        >
+          Events
+        </button>
+      )}
+    </div>
+  )}
+
 
       <input
         type="text"

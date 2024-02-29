@@ -3,28 +3,28 @@ import Modal from 'react-modal';
 
 const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
   // Function to remove a product from the cart
-  const removeFromCart = (productId) => {
-    const updatedCart = cart.filter((item) => item.id !== productId);
+  const removeFromCart = (productName) => {
+    const updatedCart = cart.filter((item) => item.name !== productName);
     setCart(updatedCart);
   };
 
   // Function to increase the quantity of a product in the cart
-  const increaseQuantity = (productId) => {
+  const increaseQuantity = (productName) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === productId
-          ? { ...item, quantity: item.quantity < item.stock ? item.quantity + 1 : item.quantity }
+        item.name === productName
+          ? { ...item, amount: item.amount < item.stock ? item.amount + 1 : item.amount }
           : item
       )
     );
   };
 
   // Function to decrease the quantity of a product in the cart
-  const decreaseQuantity = (productId) => {
+  const decreaseQuantity = (productName) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === productId && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
+        item.name === productName && item.amount > 1
+          ? { ...item, amount: item.amount - 1 }
           : item
       )
     );
@@ -35,8 +35,8 @@ const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
     cart.forEach((item) => {
       setProducts((prevProducts) =>
         prevProducts.map((product) =>
-          product.id === item.id
-            ? { ...product, stock: product.stock - item.quantity }
+          product.name === item.name
+            ? { ...product, stock: product.stock - item.amount }
             : product
         )
       );
@@ -47,7 +47,7 @@ const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
     closeModal(); // Close the modal
   };
 
-  const overallTotal = cart.reduce((total, item) => total + item.quantity * item.price, 0);
+  const overallTotal = cart.reduce((total, item) => total + item.amount * item.price, 0);
 
   return (
     <Modal
@@ -61,7 +61,6 @@ const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
           <thead>
             <tr>
               <th className="text-left">Product</th>
-              <th className="text-left">Description</th>
               <th className="text-left">Quantity</th>
               <th className="text-right">Price</th>
               <th className="text-right">Total</th>
@@ -70,30 +69,30 @@ const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
           </thead>
           <tbody>
             {cart.map((item) => (
-              <tr key={item.id}>
+              <tr key={item.name}>
                 <td className="text-left">
                   <h3 className="text-lg font-semibold">{item.name}</h3>
                 </td>
                 <td className="flex items-center space-x-2">
                   <button
-                    onClick={() => decreaseQuantity(item.id)}
+                    onClick={() => decreaseQuantity(item.name)}
                     className="bg-gray-300 text-gray-700 px-2 py-1 rounded"
                   >
-                    -
+                    <i class="fa-solid fa-minus"></i>
                   </button>
-                  <p>{item.quantity}</p>
+                  <p>{item.amount}</p>
                   <button
-                    onClick={() => increaseQuantity(item.id)}
+                    onClick={() => increaseQuantity(item.name)}
                     className="bg-gray-300 text-gray-700 px-2 py-1 rounded"
                   >
-                    +
+                    <i class="fa-solid fa-plus"></i>
                   </button>
                 </td>
                 <td className="text-right">${item.price.toFixed(2)}</td>
-                <td className="text-right">${(item.quantity * item.price).toFixed(2)}</td>
+                <td className="text-right">${(item.amount * item.price).toFixed(2)}</td>
                 <td className="text-right">
                   <button
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => removeFromCart(item.name)}
                     className="bg-red-500 text-white px-2 py-1 rounded"
                   >
                     Remove

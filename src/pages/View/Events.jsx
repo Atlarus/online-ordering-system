@@ -27,13 +27,6 @@ const Events = ({ events, searchInput }) => {
                     <p className="text-gray-700">
                         <strong>Available Tickets:</strong> {event.availableTicket}
                     </p>
-                    <ul>
-                        {event.ticketSold.map((ticket) => (
-                            <li key={ticket.id} className="mb-2">
-                                <strong>Name:</strong> {ticket.name} <strong>Ticket Number:</strong> {ticket.ticketNumber}
-                            </li>
-                        ))}
-                    </ul>
                 </li>
             ))}
             </ul>

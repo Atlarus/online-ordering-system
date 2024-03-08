@@ -11,13 +11,15 @@ const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
   // Function to increase the quantity of a product in the cart
   const increaseQuantity = (productName) => {
     setCart((prevCart) =>
-      prevCart.map((item) =>
+      prevCart.map((item) => 
         item.name === productName
-          ? { ...item, amount: item.amount < item.stock ? item.amount + 1 : item.amount }
+          ? (item.stock
+              ? { ...item, amount: item.amount < item.stock ? item.amount + 1 : item.amount }
+              : { ...item, amount: item.amount + 1 })
           : item
       )
     );
-  };
+  };  
 
   // Function to decrease the quantity of a product in the cart
   const decreaseQuantity = (productName) => {
@@ -110,7 +112,7 @@ const CartModal = ({ cart, setCart, setProducts, isModalOpen, closeModal }) => {
           className="bg-green-500 text-white px-4 py-2 rounded mt-4"
           disabled={cart.length === 0}
         >
-          Place Order
+          Continue to payment
         </button>
         <button
           onClick={closeModal}

@@ -42,7 +42,7 @@ const Layout = ({ cart, setCart, setData, businessID, data, setError, setIsDataL
           </Link>
           <div className="flex items-center space-x-4">
             <Link to={`/v/${businessID}`} className="text-white hover:text-gray-300">
-              Home
+            <i class="fa-solid fa-house"></i>
             </Link>
             <Link to={`/Dashboard`} className="text-white hover:text-gray-300">
               Dashboard

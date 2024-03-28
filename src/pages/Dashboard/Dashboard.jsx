@@ -36,7 +36,20 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
     
     return (
         <>
-            {isVerified === true ? (
+                        <div>
+                    <nav className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-4 shadow-xl flex items-center justify-between space-x-4">
+                        <div className="flex items-center justify-between flex-1">
+                            <Link to={`/Dashboard`} className="text-white hover:text-gray-300">
+                                Dashboard
+                            </Link>
+                            <Link to={`/v/${businessID}`} className="text-white hover:text-gray-300">
+                                View
+                            </Link>
+                        </div>
+                        <button>Log Out</button>
+                    </nav>
+                </div>
+{/*             {isVerified === true ? (
                 <div>
                     <nav className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-4 shadow-xl flex items-center justify-between space-x-4">
                         <div className="flex items-center justify-between flex-1">
@@ -60,7 +73,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                         </div>
                     </nav>
                     <Auth setIsLoggedIn={setIsLoggedIn} setBusinessID={setBusinessID} setToken={setToken}/>
-                </div>)}
+                </div>)} */}
         </>
     )
 }

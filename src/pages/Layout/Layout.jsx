@@ -37,7 +37,7 @@ const Layout = ({ cart, setCart, setData, businessID, data, setError, setIsDataL
     <div>
       <nav className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-4 shadow-xl">
         <div className="flex items-center justify-between flex-wrap"> {/* Use flex-wrap to allow items to wrap on smaller screens */}
-          <Link to={`/v/${businessID}`} className="text-white text-2xl font-bold mr-4 mb-4 sm:mb-0"> {/* Add margin bottom on smaller screens */}
+          <Link to={`/v/${businessID}`} className="text-white text-2xl font-bold sm:mb-0"> {/* Add margin bottom on smaller screens */}
             {businessID}
           </Link>
           <div className="flex items-center space-x-4">
